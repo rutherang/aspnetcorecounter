@@ -31,7 +31,7 @@ namespace FlatPlanet.Controllers
             var exam = _context.Exams.FirstOrDefault(x => x.Id == 1);
             if(exam == null)
             {
-                throw new Exception("We cannot find any counter in the exam");
+                return View("../Shared/Error");
             }
             return View(exam);
         }
@@ -40,24 +40,22 @@ namespace FlatPlanet.Controllers
         public IActionResult AddCounter()
         {
             var exam = _context.Exams.FirstOrDefault(x => x.Id == 1);
-            if (exam != null)
+            if (exam == null)
             {
-                if (exam.Counter < 10)
-                {
-                    exam.Counter++;
-                    _context.SaveChanges();
-                }
-
-                if(IsAjax())
-                {
-                    return new JsonResult(exam.Counter);
-                }
-            }
-            else 
-            {
-                throw new Exception("Cannot find any counter in the exam");
+                return View("../Shared/Error");
             }
             
+            if (exam.Counter < 10)
+            {
+                exam.Counter++;
+                _context.SaveChanges();
+            }
+
+            if(IsAjax())
+            {
+                return new JsonResult(exam.Counter);
+            }
+
             return RedirectToAction("Index");
         }
 
