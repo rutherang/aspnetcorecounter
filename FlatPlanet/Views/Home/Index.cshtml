@@ -1,0 +1,34 @@
+﻿@model FlatPlanet.Models.Exam
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="row">
+    <div class="panel">
+        <div class="panel-heading">
+            <h1>Exam Counter<h1>
+        </div>
+        <div class="panel-body">
+            <form id="FormAddCounter" action='@Url.Action("AddCounter", "Home")' method="post">            
+                <h3 id="counter">@Model.Counter</h3>            
+                <input class="btn btn-primary" type="submit" value="Up">
+             </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $('#FormAddCounter').submit(function(event) {
+        event.preventDefault();
+        let btn = $('input[type="submit"]');
+        btn.attr('disabled','disabled');
+        $.post(this.action, function(data, status){
+            $('#counter').text(data);
+        }).always(function(){
+            btn.removeAttr('disabled');
+        });
+    });
+</script>
+}
